@@ -31,9 +31,9 @@ app.post('/criar-preferencia', async (req, res) => {
         }
       ],
       back_urls: {
-        success: 'https://seusite.com/sucesso',
-        failure: 'https://seusite.com/falha',
-        pending: 'https://seusite.com/pendente'
+        success: 'https://pagagora.onrender.com/sucesso',
+        failure: 'https://pagagora.onrender.com/falha',
+        pending: 'https://pagagora.onrender.com/pendente'
       }
     };
 
