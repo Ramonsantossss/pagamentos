@@ -1,4 +1,4 @@
-
+/*
 const express = require('express');
 const mercadopago = require('mercadopago');
 const bodyParser = require('body-parser');
@@ -48,10 +48,11 @@ app.post('/criar-preferencia', async (req, res) => {
       status: 'pendente' // Define como pendente inicialmente
     };
     payments.push(paymentDetails);
-
+    console.log(paymentDetails)
     // Redirecione o usuário para a página de pagamento do Mercado Pago
     res.redirect(paymentLink);
-  } catch (error) {
+    console.log(paymentLink)
+    } catch (error) {
     console.error('Erro ao criar preferência:', error);
     res.status(500).json({ error: 'Erro ao criar preferência de pagamento' });
   }
@@ -107,4 +108,62 @@ app.get('/pendente', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
+});
+*/
+
+
+
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const mercadopago = require('mercadopago');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
+
+// Configure suas credenciais do Mercado Pago
+mercadopago.configure({
+  access_token: 'APP_USR-8259792445335336-080911-dea2c74872b688a02354a83a497effba-1445374797'
+});
+
+app.get('/', (req, res) => {
+  res.render('index');
+});
+
+app.post('/pagar', async (req, res) => {
+  try {
+    const { produto, valor } = req.body;
+
+    const preference = {
+      items: [
+        {
+          title: produto,
+          unit_price: parseFloat(valor),
+          quantity: 1,
+        },
+      ],
+      back_urls: {
+        success: 'https://pagagora.onrender.com/success',
+        failure: 'https://pagagora.onrender.com/failure',
+      },
+      auto_return: 'approved',
+    };
+
+    const response = await mercadopago.preferences.create(preference);
+    res.redirect(response.body.init_point);
+  } catch (error) {
+    console.error('Erro ao processar pagamento:', error);
+    res.status(500).send('Erro ao processar o pagamento.');
+  }
+});
+
+app.get('/success', (req, res) => {
+  res.render('success');
+});
+
+app.listen(PORT, () => {
+  console.log(`Servidor iniciado na porta ${PORT}`);
 });
