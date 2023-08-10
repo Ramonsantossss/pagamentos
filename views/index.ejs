@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site de Pagamento Automático</title>
+</head>
+<body>
+    <h1>Produtos</h1>
+    <ul>
+        <li>
+            <p>Produto 1 - R$0.01</p>
+            <form action="/pagar" method="post">
+                <input type="hidden" name="produto" value="Produto 1">
+                <input type="hidden" name="valor" value="0.01">
+                <button type="submit">Comprar</button>
+            </form>
+        </li>
+        <!-- Adicione mais produtos aqui -->
+    </ul>
+</body>
+</html>
